@@ -85,6 +85,25 @@
       // the writeup to view the URL pattern for fetch one and fetch all
       function fetchAll() {
         // TODO
+        document.getElementById("recordForm").style.display = "none";
+        document.getElementById("author").value = "";
+        document.getElementById("title").value = "";
+        document.getElementById("recordIDcontainer").style.display = "none";
+        document.getElementById("recordID").value = "";
+
+        fetch(document.getElementById("endpoint").value).then((response) => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error('Error Network 404');
+          }
+        })
+        .then((responseJson) => {
+        document.getElementById("output").value = JSON.stringify(responseJson);
+        })
+        .catch((error) => {
+          document.getElementById("output").value = "Network Error: 404";
+        });
       }
 
       // This function should fetch one entry from the given endpoint.
@@ -93,6 +112,29 @@
       // the writeup to view the URL pattern for fetch one and fetch all
       function fetchOne() {
         // TODO
+        document.getElementById("recordForm").style.display = "none";
+        document.getElementById("author").value = "";
+        document.getElementById("title").value = "";
+        document.getElementById("recordIDcontainer").style.display = "none";
+        document.getElementById("recordID").value = "";
+
+        let id = prompt("Enter record id");
+        let endpoint = document.getElementById("endpoint").value;
+        let endpointWithID = endpoint + "/" + id;
+        
+        fetch(endpointWithID).then((response) => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error('Error Network 404');
+          }
+        })
+        .then((responseJson) => {
+        document.getElementById("output").value = JSON.stringify(responseJson);
+        })
+        .catch((error) => {
+          document.getElementById("output").value = "Network Error: 404";
+        });
       }
 
       // This function should use fetch to create one entry in the given endpoint.
@@ -101,6 +143,39 @@
       // the writeup to view the URL pattern for create and update
       function createRecord() {
         // TODO
+        //Change CSS Display attribute from None to Block 
+        document.getElementById("recordForm").style.display = "block";
+        document.getElementById("recordIDcontainer").style.display = "none";
+        document.getElementById("recordID").value = "";
+          
+        const data = {
+          title: document.getElementById("title").value,
+          author: document.getElementById("author").value
+        };
+
+        if(document.getElementById("title").value != "" & document.getElementById("author").value != "") {
+          fetch(document.getElementById("endpoint").value, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+          })
+
+          .then((response) => {
+            if (response.ok) {
+              return response.json();
+            } else {
+              throw new Error('Error Network 404');
+            }
+          })
+          .then((responseJson) => {
+          document.getElementById("output").value = JSON.stringify(responseJson);
+          })
+          .catch((error) => {
+            document.getElementById("output").value = "Network Error: 404";
+          });
+        }
       }
 
       // This function should use fetch to update one existing entry in the given endpoint.
@@ -109,6 +184,38 @@
       // the writeup to view the URL pattern for create and update
       function updateRecord() {
         // TODO
+        document.getElementById("recordForm").style.display = "block";
+        document.getElementById("recordIDcontainer").style.display = "block";
+
+        let endPointID = document.getElementById("recordID").value;
+        let endPointURL = document.getElementById("endpoint").value + "/" + endPointID;
+
+        const data = {
+          title: document.getElementById("title").value,
+          author: document.getElementById("author").value
+        };
+        if(document.getElementById("title").value != "" & document.getElementById("author").value != "" && document.getElementById("recordID").value != "") {
+          fetch(endPointURL, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+          })
+          .then((response) => {
+            if (response.ok) {
+              return response.json();
+            } else {
+              throw new Error('Error Network 404');
+            }
+          })
+          .then((responseJson) => {
+          document.getElementById("output").value = JSON.stringify(responseJson);
+          })
+          .catch((error) => {
+            document.getElementById("output").value = "Network Error: 404";
+          });
+        }
       }
 
       // This function should use fetch to delete one existing entry in the given endpoint.
@@ -118,6 +225,35 @@
       // delete all, only delete one.
       function deleteRecord() {
         // TODO
+        document.getElementById("recordForm").style.display = "none";
+        document.getElementById("author").value = "";
+        document.getElementById("title").value = "";
+        document.getElementById("recordIDcontainer").style.display = "none";
+        document.getElementById("recordID").value = "";
+
+        let id = prompt("Enter record id");
+        let endpoint = document.getElementById("endpoint").value;
+        let endpointWithID = endpoint + "/" + id;
+        
+        fetch(endpointWithID, {
+          method: 'DELETE',
+          headers: {
+            'Content-type': 'application/json',
+          },
+        })
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error('Error Network 404');
+          }
+        })
+        .then((responseJson) => {
+        document.getElementById("output").value = JSON.stringify(responseJson);
+        })
+        .catch((error) => {
+          document.getElementById("output").value = "Network Error: 404";
+        });
       }
 
       window.addEventListener('DOMContentLoaded', () => {
